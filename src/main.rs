@@ -7,16 +7,23 @@ fn main() {
 
     let secret_number = rand::thread_rng().gen_range(1..=100);
 
-    // println!("Secret number is: {}", secret_number);
+    println!("Secret number is: {}", secret_number);
     
     // infinite loop
     loop {
         let mut guess_number = String::new();
 
         println!("Input your guess");
-        io::stdin().read_line(&mut guess_number).expect("Failed to get guess number!");
 
-        let guess_number: u32 = guess_number.trim().parse().unwrap();
+        io::stdin()
+                .read_line(&mut guess_number)
+                .expect("Failed to get guess number!");
+
+        // handle err, if users type text instead of number, make them type again
+        let guess_number: u32 = match guess_number.trim().parse() {
+            Ok(parsed_number) => parsed_number,
+            Err(_) => continue,
+        };
 
         println!("Your guess number is: {}", guess_number);
 
